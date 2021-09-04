@@ -8,7 +8,9 @@
 - Prepare `truffle-config.js` by adding/editing `kovan` provider
 - `truffle compile` to check if there are any error on compilation/
 - `truffle deploy --network kovan` to compile and deploy all contracts to Kovan network, it will returns smartcontract addresses that you have to note it somewhere else. 
-- `truffle run verify PancakeFactory --network kovan` to verify contract on BSCSCAN, you will need `bsc_api_key` on this step.
+- `truffle run verify PancakeFactory --network kovan` to verify PancakeFactory contract on BSCSCAN, you will need `bsc_api_key` on this step.
+- - `truffle run verify WBNB --network kovan` to verify WBNB contract on BSCSCAN, you will need `bsc_api_key` on this step.
+
 
 ## .secret schema
 ```
