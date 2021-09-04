@@ -1,20 +1,21 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const infuraKey = "ed8dd5da3de14262878f970d583df954";
-const etherApiKey = "SKMJ2SAXCJ2D1NJQYFEEP1Y4GHXWD2PM3Y";
-//
+
 const fs = require('fs');
-const mnemonic = fs.readFileSync(".secret").toString().trim();
+const { privatekey, infura_id, bsc_api_key, eth_api_key } = JSON.parse(fs.readFileSync(".secret").toString().trim());
+// const mnemonic = `twice attract squirrel journey retreat assume canyon april solar primary usage pony`;
+
+const binanceTestnetProvider = new HDWalletProvider({
+    privateKeys: privatekey,
+    providerOrUrl: `https://data-seed-prebsc-1-s1.binance.org:8545`
+});
+
+const kovanProvider = new HDWalletProvider({
+    privateKeys: privatekey,
+    providerOrUrl: `https://kovan.infura.io/v3/${infura_id}`
+});
 
 module.exports = {
-    /**
-     * Networks define how you connect to your ethereum client and let you set the
-     * defaults web3 uses to send transactions. If you don't specify one truffle
-     * will spin up a development blockchain for you on port 9545 when you
-     * run `develop` or `test`. You can ask a truffle command to use a specific
-     * network from the command line, e.g
-     *
-     * $ truffle test --network <network-name>
-     */
+
 
     networks: {
         // Useful for testing. The `development` name is special - truffle uses it by default
@@ -23,15 +24,15 @@ module.exports = {
         // tab if you use this network and you must also set the `host`, `port` and `network_id`
         // options below to some value.
         //
-        development: {
+        development: { // CLI
             host: "127.0.0.1", // Localhost (default: none)
             port: 8545, // Standard Ethereum port (default: none)
             network_id: "*", // Any network (default: none)
         },
-        ganache: {
+        local: { // GUI
             host: "127.0.0.1", // Localhost (default: none)
             port: 7545, // Standard Ethereum port (default: none)
-            network_id: "7777", // Any network (default: none)
+            network_id: "5777", // Any network (default: none)
         },
         // Another network with more advanced options...
         // advanced: {
@@ -44,10 +45,10 @@ module.exports = {
         // },
         // Useful for deploying to a public network.
         // NB: It's important to wrap the provider as a function.
-        rinkeby: {
-            provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
-            network_id: 4, // Rinkeby's id
-            gas: 5500000, // Rinkeby has a lower block limit than mainnet
+        kovan: {
+            provider: () => kovanProvider,
+            network_id: 42, // Kovan's id
+            gas: 5500000, // Kovan has a lower block limit than mainnet
             confirmations: 2, // # of confs to wait between deployments. (default: 0)
             timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
             skipDryRun: true // Skip dry run before migrations? (default: false for public nets )
@@ -69,10 +70,10 @@ module.exports = {
     compilers: {
         solc: {
             version: "0.5.16", // Fetch exact version from solc-bin (default: truffle's version)
-            // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
+            docker: false, // Use "0.5.1" you've installed locally with docker (default: false)
             settings: { // See the solidity docs for advice about optimization and evmVersion
                 optimizer: {
-                    enabled: false,
+                    enabled: true,
                     runs: 200
                 },
                 // evmVersion: "byzantium"
@@ -83,16 +84,17 @@ module.exports = {
         'truffle-plugin-verify'
     ],
     api_keys: {
-        etherscan: etherApiKey,
-        // bscscan: bscApiKey,
-    }
+        etherscan: eth_api_key,
+        bscscan: bsc_api_key,
+    },
+
     // Truffle DB is currently disabled by default; to enable it, change enabled: false to enabled: true
     //
     // Note: if you migrated your contracts prior to enabling this field in your Truffle project and want
     // those previously migrated contracts available in the .db directory, you will need to run the following:
     // $ truffle migrate --reset --compile-all
 
-    // db: {
-    //     enabled: false
-    // }
+    db: {
+        enabled: false
+    }
 };
