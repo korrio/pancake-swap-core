@@ -1,12 +1,11 @@
-# Pancake Factory
-
-[![Actions Status](https://github.com/pancakeswap/pancake-swap-core/workflows/CI/badge.svg)](https://github.com/pancakeswap/pancake-swap-core/actions)
-
-In-depth documentation on PancakeSwap is available at [docs.pancakeswap.finance](https://docs.pancakeswap.finance/).
-
-# Local Development
-
-The following assumes the use of `node@>=10`.
+## Instruction to fresh fork from orginal `pancake-swap-core`
+- `truffle init` to generate fresh `truffle-config.js`
+- Press N, enter, N, enter.
+- add `.secret` to root directory of project
+- Prepare `truffle-config.js` by adding `kovan` provider
+- `truffle compile`
+- `truffle deploy --network kovan`
+- `truffle run verify PancakeFactory --network kovan`
 
 ## Install Dependencies
 
